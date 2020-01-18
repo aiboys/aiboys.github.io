@@ -29,7 +29,7 @@
   <style type="text/css">
     
     #container.show {
-      background: linear-gradient(200deg,#a0cfe4,#e8c37e);
+      background: linear-gradient(200deg,#ffffff,#778899);
     }
   </style>
   
@@ -89,6 +89,10 @@
 		<nav class="header-nav">
 			<div class="social">
 				
+					<a class="qq" href="http://wpa.qq.com/msgrd?v=3&uin=913864602&site=qq&menu=yes" title="QQ" target="_blank"><i class="icon-qq"></i></a>
+				
+					<a class="mail" href="mailto:913864602@qq.com" title="NULL" target="_blank"><i class="icon-mail"></i></a>
+				
 			</div>
 		
 		</nav>
@@ -132,6 +136,10 @@
 			<nav class="header-nav">
 				<div class="social">
 					
+						<a class="qq" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=913864602&site=qq&menu=yes" title="QQ"><i class="icon-qq"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:913864602@qq.com" title="NULL"><i class="icon-mail"></i></a>
+			        
 				</div>
 			</nav>
 
@@ -224,6 +232,17 @@
 
         <div class="article-info info-on-right">
           
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
           
 
         </div>
@@ -251,7 +270,7 @@
       	<div class="footer-right">
 			
 			
-      		GitHub:<a href="https://github.com/JoeyBling/hexo-theme-yilia-plus" target="_blank">hexo-theme-yilia-plus</a> by Litten
+      		 
       	</div>
     </div>
   </div>
@@ -301,10 +320,10 @@
   var titleTime;
   document.addEventListener("visibilitychange", function () {
     if (document.hidden) {
-      document.title = "(つェ⊂) 我藏好了哦~ " + originTitle;
+      document.title = "(つェ⊂) 我被困住了~ " + originTitle;
       clearTimeout(titleTime);
     } else {
-      document.title = "(*´∇｀*) 被你发现啦~ " + originTitle;
+      document.title = "(*´∇｀*) 感谢拯救~ " + originTitle;
       titleTime = setTimeout(function () {
         document.title = originTitle;
       }, 2000);
@@ -363,6 +382,10 @@
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
