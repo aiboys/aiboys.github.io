@@ -6,16 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2020 | Hexo</title>
+  <title>Python装饰器&amp;函数闭包 | Hexo</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/2020/page/2/index.html">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="Python装饰器&amp;函数闭包">
+<meta property="og:url" content="http://yoursite.com/2020/08/11/Decorator/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:image" content="https://github.com/aiboys/Markdown_pic/blob/master/cover.jpg?raw=true">
+<meta property="article:published_time" content="2020-08-11T11:58:14.762Z">
+<meta property="article:modified_time" content="2020-08-11T11:59:21.070Z">
 <meta property="article:author" content="罗小young">
+<meta property="article:tag" content="python">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/aiboys/Markdown_pic/blob/master/cover.jpg?raw=true">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -165,241 +170,364 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-Decorator" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
   
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/02/12/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F4/" class="archive-article-date">
-        <time datetime="2020-02-12T02:50:21.995Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-12</time>
+  
+        
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
+<a href="/2020/08/11/Decorator/" class="archive-article-date">
+        <time datetime="2020-08-11T11:58:14.762Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-11</time>
 </a>
 
-        </div>
-    	 
   
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2020/02/12/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F4/" target="_blank">科研五色石每日读后感之四:让自己尽可能地闲下来</a>
   
+    
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">1.4k字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">7分</span>
+    </span>
+  </span>
+</div>
+
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+  
+<center><p>
+  
+    <h1 class="article-title_code_ant" itemprop="name">
+      Python装饰器&amp;函数闭包
     </h1>
   
 
+</p></center>
+    
+    <div align="center"><img src="https://github.com/aiboys/Markdown_pic/blob/master/cover.jpg?raw=true"></div>
 
-        <div class="article-info info-on-right">
-          
+<a id="more"></a>
+
+<h2 id="1-闭包"><a href="#1-闭包" class="headerlink" title="1.闭包"></a>1.闭包</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># print_msg是外围函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_msg</span><span class="params">()</span>:</span></span><br><span class="line">    msg = <span class="string">"I'm closure"</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># printer是嵌套函数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_printer</span><span class="params">(*args)</span>:</span></span><br><span class="line">        print(msg, *args)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> _printer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里获得的就是一个闭包</span></span><br><span class="line">closure = print_msg()  <span class="comment"># 此时就变成 function __main__.print_msg._printer</span></span><br><span class="line"><span class="comment"># 输出 I'm closure</span></span><br><span class="line">closure([<span class="string">'new input1'</span>,<span class="string">'new input2'</span>])</span><br></pre></td></tr></table></figure>
+
+<pre><code>I&apos;m closure [&apos;new input1&apos;, &apos;new input2&apos;]
+
+
+
+
+
+&lt;function __main__.print_msg.&lt;locals&gt;._printer.&lt;locals&gt;._printer2&gt;</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># print_msg是外围函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_msg</span><span class="params">()</span>:</span></span><br><span class="line">    msg = <span class="string">"I'm closure"</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># printer是嵌套函数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_printer</span><span class="params">(*args)</span>:</span></span><br><span class="line">        print(msg, *args)</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">_printer2</span><span class="params">(*args)</span>:</span></span><br><span class="line">            print(msg,*args,<span class="string">"2"</span>)</span><br><span class="line">        <span class="keyword">return</span> _printer2</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> _printer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里获得的就是一个闭包</span></span><br><span class="line">closure = print_msg() <span class="comment"># 此时就变成 function __main__.print_msg._printer</span></span><br><span class="line"><span class="comment"># 输出 I'm closure</span></span><br><span class="line">closure2 = closure([<span class="string">'new input1'</span>,<span class="string">'new input2'</span>]) <span class="comment"># 此时就变成 function __main__.print_msg._printer._printer2</span></span><br><span class="line">closure2([<span class="string">'na1'</span>,<span class="string">'na2'</span>])</span><br><span class="line"><span class="comment"># outputs:</span></span><br><span class="line"><span class="comment">#I'm closure ['new input1', 'new input2']</span></span><br><span class="line"><span class="comment"># I'm closure ['na1', 'na2'] 2</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hi</span><span class="params">(name=<span class="string">"yasoob"</span>)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">greet</span><span class="params">(name)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"now you are in the greet() function"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">welcome</span><span class="params">(name)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"now you are in the welcome() function"</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> name == <span class="string">"yasoob"</span>:</span><br><span class="line">        <span class="keyword">return</span> greet</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> welcome</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = hi()</span><br><span class="line">print(a)</span><br><span class="line"><span class="comment"># outputs: &lt;function greet at 0x7f2143c01500&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 上面清晰地展示了`a`现在指向到hi()函数中的greet()函数</span></span><br><span class="line"><span class="comment"># 现在试试这个</span></span><br><span class="line"></span><br><span class="line">print(a(<span class="string">"dsa"</span>))</span><br><span class="line"><span class="comment"># outputs: now you are in the greet() function</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;function hi.&lt;locals&gt;.greet at 0x0000024E8A0080D0&gt;
+now you are in the greet() function</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hi</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"hi yasoob!"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">doSomethingBeforeHi</span><span class="params">(func)</span>:</span></span><br><span class="line">    print(<span class="string">"I am doing some boring work before executing hi()"</span>)</span><br><span class="line">    print(func())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">doSomethingBeforeHi(hi)</span><br><span class="line"><span class="comment"># outputs:I am doing some boring work before executing hi()</span></span><br><span class="line"><span class="comment">#        hi yasoob!</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>I am doing some boring work before executing hi()
+hi yasoob!</code></pre><h2 id="2-decorator-装饰器"><a href="#2-decorator-装饰器" class="headerlink" title="2. decorator 装饰器"></a>2. decorator 装饰器</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">利用闭包实现解释器的效果</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">a_new_decorator</span><span class="params">(a_func)</span>:</span></span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapTheFunction</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">"I am doing some boring work before executing a_func()"</span>)</span><br><span class="line"> </span><br><span class="line">        a_func()</span><br><span class="line"> </span><br><span class="line">        print(<span class="string">"I am doing some boring work after executing a_func()"</span>)</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> wrapTheFunction</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">a_function_requiring_decoration</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"I am the function which needs some decoration to remove my foul smell"</span>)</span><br><span class="line"> </span><br><span class="line">a_function_requiring_decoration()</span><br><span class="line"><span class="comment">#outputs: "I am the function which needs some decoration to remove my foul smell"</span></span><br><span class="line"> </span><br><span class="line">a_function_requiring_decoration = a_new_decorator(a_function_requiring_decoration)</span><br><span class="line"><span class="comment">#now a_function_requiring_decoration is wrapped by wrapTheFunction()</span></span><br><span class="line"> </span><br><span class="line">a_function_requiring_decoration()</span><br><span class="line"><span class="comment">#outputs:I am doing some boring work before executing a_func()</span></span><br><span class="line"><span class="comment">#        I am the function which needs some decoration to remove my foul smell</span></span><br><span class="line"><span class="comment">#        I am doing some boring work after executing a_func()</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>I am the function which needs some decoration to remove my foul smell
+I am doing some boring work before executing a_func()
+I am the function which needs some decoration to remove my foul smell
+I am doing some boring work after executing a_func()</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">解释器 用法</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@a_new_decorator</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">a_function_requiring_decoration</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""Hey you! Decorate me!"""</span></span><br><span class="line">    print(<span class="string">"I am the function which needs some decoration to "</span></span><br><span class="line">          <span class="string">"remove my foul smell"</span>)</span><br><span class="line"> </span><br><span class="line">a_function_requiring_decoration()</span><br><span class="line"></span><br><span class="line"><span class="comment">#outputs: I am doing some boring work before executing a_func()</span></span><br><span class="line"><span class="comment">#         I am the function which needs some decoration to remove my foul smell</span></span><br><span class="line"><span class="comment">#         I am doing some boring work after executing a_func()</span></span><br><span class="line">help(a_function_requiring_decoration)</span><br><span class="line"><span class="comment"># output: wrapTheFunction() (a_function_requring_decoration被改变属性，变成装饰器内部函数)</span></span><br><span class="line"><span class="comment">#the @a_new_decorator is just a short way of saying:</span></span><br><span class="line">a_function_requiring_decoration = a_new_decorator(a_function_requiring_decoration)</span><br></pre></td></tr></table></figure>
+
+<pre><code>I am doing some boring work before executing a_func()
+I am the function which needs some decoration to remove my foul smell
+I am doing some boring work after executing a_func()
+Help on function wrapTheFunction in module __main__:
+
+wrapTheFunction()</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timer</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">'func is wrapped by wrapper'</span>)</span><br><span class="line">        start = time.time()</span><br><span class="line">        func(*args, **kwargs) <span class="comment">#此处拿到了被装饰的函数func</span></span><br><span class="line">        time.sleep(<span class="number">2</span>)<span class="comment">#模拟耗时操作</span></span><br><span class="line">        long = time.time() - start</span><br><span class="line">        print(<span class="string">f'共耗时<span class="subst">&#123;long&#125;</span>秒。'</span>)</span><br><span class="line">    <span class="keyword">return</span> wrapper <span class="comment">#返回内层函数的引用</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@timer     </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    print(a+b)</span><br><span class="line"></span><br><span class="line">add(<span class="number">1</span>, <span class="number">2</span>) <span class="comment">#正常调用add</span></span><br><span class="line"><span class="comment"># outputs: </span></span><br><span class="line"><span class="comment">#           func is wrapped by wrapper</span></span><br><span class="line"><span class="comment">#          3</span></span><br><span class="line"><span class="comment">#          共耗时2.000678777694702秒。</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>func is wrapped by wrapper
+3
+共耗时2.0009381771087646秒。</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">多个装饰器</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test1</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">'before test1 ...'</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">'after test1 ...'</span>)</span><br><span class="line">    <span class="keyword">return</span> wrapper <span class="comment">#返回内层函数的引用</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test2</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        print(<span class="string">'before test2 ...'</span>)</span><br><span class="line">        func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">'after test2 ...'</span>)</span><br><span class="line">    <span class="keyword">return</span> wrapper <span class="comment">#返回内层函数的引用</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@test2</span></span><br><span class="line"><span class="meta">@test1</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    print(a+b)</span><br><span class="line"></span><br><span class="line">add(<span class="number">1</span>, <span class="number">2</span>) <span class="comment">#正常调用add</span></span><br><span class="line"><span class="comment"># outputs:</span></span><br><span class="line">        <span class="comment"># before test2 ...</span></span><br><span class="line">        <span class="comment"># before test1 ...</span></span><br><span class="line">        <span class="comment"># 3</span></span><br><span class="line">        <span class="comment"># after test1 ...</span></span><br><span class="line">        <span class="comment"># after test2 ...</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>before test2 ...
+before test1 ...
+3
+after test1 ...
+after test2 ...</code></pre><h1 id="https-pic1-zhimg-com-80-v2-08254ba25bb8094a16dc60d902e16338-1440w-jpg"><a href="#https-pic1-zhimg-com-80-v2-08254ba25bb8094a16dc60d902e16338-1440w-jpg" class="headerlink" title="https://pic1.zhimg.com/80/v2-08254ba25bb8094a16dc60d902e16338_1440w.jpg"></a><a href="https://pic1.zhimg.com/80/v2-08254ba25bb8094a16dc60d902e16338_1440w.jpg" target="_blank" rel="noopener">https://pic1.zhimg.com/80/v2-08254ba25bb8094a16dc60d902e16338_1440w.jpg</a></h1><h2 id="但是装饰器会把原函数覆盖："><a href="#但是装饰器会把原函数覆盖：" class="headerlink" title="但是装饰器会把原函数覆盖："></a>但是装饰器会把原函数覆盖：</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">auth</span><span class="params">(permission)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_auth</span><span class="params">(func)</span>:</span></span><br><span class="line">        print(<span class="string">"_auth..."</span>)</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">            print(<span class="string">f"验证权限[<span class="subst">&#123;permission&#125;</span>]..."</span>)</span><br><span class="line">            func(*args, **kwargs)</span><br><span class="line">            print(<span class="string">"执行完毕..."</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> _auth</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@auth("add")  # 这一步就已经将add提前设为_auth函数了</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    求和运算</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    print(a + b)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">add(<span class="number">1</span>, <span class="number">2</span>)  <span class="comment"># 正常调用add</span></span><br><span class="line">print(add)</span><br><span class="line">print(add.__name__)</span><br><span class="line">print(add.__doc__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># outputs:</span></span><br><span class="line"><span class="comment"># 验证权限[add]...</span></span><br><span class="line"><span class="comment"># 3</span></span><br><span class="line"><span class="comment"># 执行完毕...</span></span><br><span class="line"><span class="comment"># &lt;function auth.&lt;locals&gt;._auth.&lt;locals&gt;.wrapper at 0x000001CF36B30268&gt;</span></span><br><span class="line"><span class="comment"># wrapper</span></span><br><span class="line"><span class="comment"># None</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>验证权限[add]...
+3
+执行完毕...
+&lt;function auth.&lt;locals&gt;._auth.&lt;locals&gt;.wrapper at 0x0000024E8A02B9D8&gt;
+wrapper
+None</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">auth</span><span class="params">(permission)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_auth</span><span class="params">(func)</span>:</span></span><br><span class="line">        print(<span class="string">"调用auth"</span>)</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">            <span class="string">"""</span></span><br><span class="line"><span class="string">              wrapper.__doc__</span></span><br><span class="line"><span class="string">            """</span></span><br><span class="line">            print(<span class="string">f"验证权限[<span class="subst">&#123;permission&#125;</span>]..."</span>)</span><br><span class="line">            func(*args, **kwargs)</span><br><span class="line">            print(<span class="string">"执行完毕..."</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> _auth</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@auth("add")   # 这一步就已经将add设为_auth函数了</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    求和运算</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    print(a + b)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">add(<span class="number">1</span>, <span class="number">2</span>)  <span class="comment"># 正常调用add</span></span><br><span class="line">print(add)</span><br><span class="line">print(add.__name__)</span><br><span class="line">print(add.__doc__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># outputs:</span></span><br><span class="line"><span class="comment"># 调用auth</span></span><br><span class="line"><span class="comment"># 验证权限[add]...</span></span><br><span class="line"><span class="comment"># 3</span></span><br><span class="line"><span class="comment"># 执行完毕...</span></span><br><span class="line"><span class="comment"># &lt;function auth.&lt;locals&gt;._auth.&lt;locals&gt;.wrapper at 0x00000198B4E3F378&gt;</span></span><br><span class="line"><span class="comment"># wrapper</span></span><br><span class="line"><span class="comment"># None ==  wrapper.__doc__</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 相当于函数执行的顺序是:</span></span><br><span class="line"><span class="comment"># 1: 执行@auth装饰器, 等效于: add = auth(), 然后程序返回_auth,所以add = function __main__.auth._auth</span></span><br><span class="line"><span class="comment"># 2: 执行add(1,2), 等效于: _auth(), 然后返回wrapper(), 此时add = function __main__.auth._auth.wrapper,然后调用wrapper(1,2),返回最后的结果3</span></span><br><span class="line"><span class="comment"># 由于add了wrapper函数的引用，因此add.__doc__没了None。或者说返回wrapper.__doc__</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>调用auth
+验证权限[add]...
+3
+执行完毕...
+&lt;function auth.&lt;locals&gt;._auth.&lt;locals&gt;.wrapper at 0x0000024E8A02B620&gt;
+wrapper
+
+              wrapper.__doc__</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 为了不影响原函数，用functools伪装成原函数：</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">auth</span><span class="params">(permission)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_auth</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="meta">        @functools.wraps(func) # 注意此处</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">            print(<span class="string">f"验证权限[<span class="subst">&#123;permission&#125;</span>]..."</span>)</span><br><span class="line">            func(*args, **kwargs)</span><br><span class="line">            print(<span class="string">"执行完毕..."</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> _auth</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@auth("add")</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    求和运算2</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    print(a + b)</span><br><span class="line"></span><br><span class="line">add(<span class="number">1</span>,<span class="number">2</span>)    </span><br><span class="line">print(add)</span><br><span class="line">print(add.__name__)</span><br><span class="line">print(add.__doc__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># outputs:</span></span><br><span class="line"><span class="comment">#     验证权限[add]...</span></span><br><span class="line"><span class="comment">#     3</span></span><br><span class="line"><span class="comment">#     执行完毕...</span></span><br><span class="line"><span class="comment">#     &lt;function add at 0x000001CF36B30268&gt;</span></span><br><span class="line"><span class="comment">#     add</span></span><br><span class="line"><span class="comment">#     求和运算</span></span><br></pre></td></tr></table></figure>
+
+<pre><code>验证权限[add]...
+3
+执行完毕...
+&lt;function add at 0x0000024E8A008730&gt;
+add
+
+    求和运算2</code></pre><h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><h3 id="1、装饰器原则：1）不能修改原函数-2）不能修改调用方式"><a href="#1、装饰器原则：1）不能修改原函数-2）不能修改调用方式" class="headerlink" title="1、装饰器原则：1）不能修改原函数 2）不能修改调用方式"></a>1、装饰器原则：1）不能修改原函数 2）不能修改调用方式</h3><h3 id="2、装饰器通过嵌套函数和闭包实现"><a href="#2、装饰器通过嵌套函数和闭包实现" class="headerlink" title="2、装饰器通过嵌套函数和闭包实现"></a>2、装饰器通过嵌套函数和闭包实现</h3><h3 id="3、装饰器执行顺序：洋葱法则"><a href="#3、装饰器执行顺序：洋葱法则" class="headerlink" title="3、装饰器执行顺序：洋葱法则"></a>3、装饰器执行顺序：洋葱法则</h3><h3 id="4、装饰器通过语法糖“-”修饰"><a href="#4、装饰器通过语法糖“-”修饰" class="headerlink" title="4、装饰器通过语法糖“@”修饰"></a>4、装饰器通过语法糖“@”修饰</h3><h3 id="5、谨记装饰器返回的是持有被装饰函数引用的闭包函数的引用这条原则。"><a href="#5、谨记装饰器返回的是持有被装饰函数引用的闭包函数的引用这条原则。" class="headerlink" title="5、谨记装饰器返回的是持有被装饰函数引用的闭包函数的引用这条原则。"></a>5、谨记装饰器返回的是持有被装饰函数引用的闭包函数的引用这条原则。</h3><h3 id="6、用functools-wrap可以消除对原函数的覆盖，转变为伪装"><a href="#6、用functools-wrap可以消除对原函数的覆盖，转变为伪装" class="headerlink" title="6、用functools.wrap可以消除对原函数的覆盖，转变为伪装"></a>6、用functools.wrap可以消除对原函数的覆盖，转变为伪装</h3>
+    
+<!-- 《添加版权声明 -->
+
+    <!-- 《添加版权声明 -->
+<!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+
+
+<!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+
+  <div class="declare">
+    <strong class="author">本文作者：</strong>
+    
+      罗小young
+    
+    <br>
+    <strong class="create-time">发布时间：</strong>
+    2020-08-11
+    <br>
+    <strong class="update-time">最后更新：</strong>
+    2020-08-11
+    <br>
+    <strong class="article-titles">本文标题：</strong>
+    <a href="http://yoursite.com/2020/08/11/Decorator/" title="Python装饰器&amp;函数闭包" target="_blank">Python装饰器&amp;函数闭包</a>
+  <br>
+    <strong class="copyright">版权声明：</strong>
+    本作品采用
+    <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+    许可协议进行许可。转载请注明出处！
+    
+      <br>
+      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a>
+    
+  </div>
+
+<!-- 添加版权声明》 -->
+
+<!-- 添加版权声明》 -->
+    
+    <div class="page-reward">
+      <a href="javascript:void(0);" class="page-reward-btn tooltip-top" target="_self">
+        <div class="tooltip tooltip-east">
+          <span class="tooltip-item">
+            赏
+          </span>
+          <span class="tooltip-content">
+            <span class="tooltip-text">
+              <span class="tooltip-inner">
+                <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢,我会更加努(随)力(缘)更新好(水)文章!<i
+                    class="icon icon-quo-right"></i></p>
+                <div class="reward-box">
+                  
+                  <div class="reward-box-item">
+                    <img class="reward-img" src="/assets/img/zhifubao.jpg">
+                    <span class="reward-type">支付宝</span>
+                  </div>
+                  
+                  
+                  <div class="reward-box-item">
+                    <img class="reward-img" src="/assets/img/weixin.jpg">
+                    <span class="reward-type">微信</span>
+                  </div>
+                  
+                </div>
+              </span>
+            </span>
+          </span>
+        </div>
+      </a>
+    </div>
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">科研五色石</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+    
 
+    
+
+    
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/08/11/Decorator/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+    
+    <div class="clearfix"></div>
+  </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/02/11/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F3/" class="archive-article-date">
-        <time datetime="2020-02-11T03:39:40.437Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-11</time>
-</a>
 
+
+<nav id="article-nav">
+  
+    <a href="/2020/08/11/pytorch%E7%9A%84%E4%B8%80%E4%BA%9Bloss%E7%AC%94%E8%AE%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          nn.BCELoss()&amp; nn.CrossEntropyLoss()
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/05/const%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">const成员函数</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2020/02/11/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F3/" target="_blank">科研五色石每日读后感之三：让课题飞一会儿</a>
-  
-    </h1>
-  
-
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">科研五色石</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-闭包"><span class="toc-number">1.</span> <span class="toc-text">1.闭包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-decorator-装饰器"><span class="toc-number">2.</span> <span class="toc-text">2. decorator 装饰器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#https-pic1-zhimg-com-80-v2-08254ba25bb8094a16dc60d902e16338-1440w-jpg"><span class="toc-number"></span> <span class="toc-text">https:&#x2F;&#x2F;pic1.zhimg.com&#x2F;80&#x2F;v2-08254ba25bb8094a16dc60d902e16338_1440w.jpg</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#但是装饰器会把原函数覆盖："><span class="toc-number">1.</span> <span class="toc-text">但是装饰器会把原函数覆盖：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结："><span class="toc-number">2.</span> <span class="toc-text">总结：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、装饰器原则：1）不能修改原函数-2）不能修改调用方式"><span class="toc-number">2.1.</span> <span class="toc-text">1、装饰器原则：1）不能修改原函数 2）不能修改调用方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、装饰器通过嵌套函数和闭包实现"><span class="toc-number">2.2.</span> <span class="toc-text">2、装饰器通过嵌套函数和闭包实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、装饰器执行顺序：洋葱法则"><span class="toc-number">2.3.</span> <span class="toc-text">3、装饰器执行顺序：洋葱法则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、装饰器通过语法糖“-”修饰"><span class="toc-number">2.4.</span> <span class="toc-text">4、装饰器通过语法糖“@”修饰</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、谨记装饰器返回的是持有被装饰函数引用的闭包函数的引用这条原则。"><span class="toc-number">2.5.</span> <span class="toc-text">5、谨记装饰器返回的是持有被装饰函数引用的闭包函数的引用这条原则。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、用functools-wrap可以消除对原函数的覆盖，转变为伪装"><span class="toc-number">2.6.</span> <span class="toc-text">6、用functools.wrap可以消除对原函数的覆盖，转变为伪装</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/02/10/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F2/" class="archive-article-date">
-        <time datetime="2020-02-10T02:27:05.627Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-10</time>
-</a>
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2020/02/10/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F2/" target="_blank">科研五色石每日读后感之二：穷追猛打，更上一层楼</a>
-  
-    </h1>
-  
+        
+    </div>
+</aside>
 
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">科研五色石</a>
-        		</li>
-      		
-		</ul>
-	</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/02/09/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F/" class="archive-article-date">
-        <time datetime="2020-02-09T02:31:10.885Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-09</time>
-</a>
 
-        </div>
-    	 
+
+
+
+
+
+
   
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2020/02/09/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F/" target="_blank">科研五色石每日读后感之一：科研好感觉若干种</a>
+  <div id="gitment-ctn"></div>
   
-    </h1>
+    <!-- 中文 -->
+    <link rel="stylesheet" href="/lib/gitment.css">
+    <script src="/lib/gitment.js"></script>
+  
+  <script>
+    <!-- id: "Python装饰器&amp;函数闭包" -->
+    var gitment = new Gitment({
+      id: "20200811195814",
+      owner: 'aiboys',
+      repo: 'aiboys.github.io',
+      oauth: {
+        client_id: 'd64645976912560d1df7',
+        client_secret: '72b3474da6d95fcd3f0923335b33fc4ab1e3c16b',
+      },
+    })
+    gitment.render('gitment-ctn')
+  </script>
+
+
   
 
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">科研五色石</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/01/16/hello-world/" class="archive-article-date">
-        <time datetime="2020-01-16T06:54:07.995Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-16</time>
-</a>
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2020/01/16/hello-world/" target="_blank">Hello World</a>
-  
-    </h1>
-  
-
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2020/">&amp;laquo; Prev</a><a class="page-number" href="/archives/2020/">1</a><span class="page-number current">2</span>
-    </nav>
-  
 
 
           </div>
@@ -440,8 +568,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,

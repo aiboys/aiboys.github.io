@@ -6,16 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2020 | Hexo</title>
+  <title>Python 迭代器和生成器 | Hexo</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/2020/page/2/index.html">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="Python 迭代器和生成器">
+<meta property="og:url" content="http://yoursite.com/2020/08/15/iterable_iterator_generator/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:image" content="https://github.com/aiboys/Markdown_pic/blob/master/cover.jpg?raw=true">
+<meta property="article:published_time" content="2020-08-15T01:19:26.347Z">
+<meta property="article:modified_time" content="2020-08-15T02:23:13.324Z">
 <meta property="article:author" content="罗小young">
+<meta property="article:tag" content="python">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/aiboys/Markdown_pic/blob/master/cover.jpg?raw=true">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -165,241 +170,327 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-iterable_iterator_generator" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
   
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/02/12/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F4/" class="archive-article-date">
-        <time datetime="2020-02-12T02:50:21.995Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-12</time>
+  
+        
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
+<a href="/2020/08/15/iterable_iterator_generator/" class="archive-article-date">
+        <time datetime="2020-08-15T01:19:26.347Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-15</time>
 </a>
 
-        </div>
-    	 
   
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2020/02/12/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F4/" target="_blank">科研五色石每日读后感之四:让自己尽可能地闲下来</a>
   
+    
+<div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <!-- fonts.scss -->
+      <!-- 百度字体平台:http://fontstore.baidu.com/static/editor/index.html -->
+      <i class="icon-statistics"></i>
+      <span class="post-meta-item-text"> 字数统计:</span>
+      <span class="post-count">2.3k字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="icon-book icon"></i>
+      <span class="post-meta-item-text"> 阅读时长≈</span>
+      <span class="post-count">10分</span>
+    </span>
+  </span>
+</div>
+
+
+  
+  </header>
+  
+  <div class="article-entry" itemprop="articleBody">
+  
+<center><p>
+  
+    <h1 class="article-title_code_ant" itemprop="name">
+      Python 迭代器和生成器
     </h1>
   
 
+</p></center>
+    
+    <div align="center"><img src="https://github.com/aiboys/Markdown_pic/blob/master/cover.jpg?raw=true"></div>
 
-        <div class="article-info info-on-right">
-          
+<a id="more"></a>
+
+<h2 id="意义-作用"><a href="#意义-作用" class="headerlink" title="意义/作用"></a>意义/作用</h2><p>众所周知，当我们要处理一个序列的数据时，比如说列表或者字典等，我们一般会用for进行循环处理，但是每次都要求我们的对象是一次性读入内存里，如果数据小还好，对于长的list，这显然是不够良好的实现方式。那么为了解决这一点，迭代器由此而生。和c++的“容器”类似，迭代器对象可以看作是一种事先不固定长度的object，它通过iter和next方法进行元素的访问，在内部通过判定边界，发出<code>StopIteration</code>来终止迭代。</p>
+<h2 id="Iterable"><a href="#Iterable" class="headerlink" title="Iterable"></a>Iterable</h2><p>python内部源码类别定义:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Iterable(metaclass&#x3D;ABCMeta):</span><br><span class="line"></span><br><span class="line">    __slots__ &#x3D; ()</span><br><span class="line"></span><br><span class="line">    @abstractmethod</span><br><span class="line">    def __iter__(self):</span><br><span class="line">        while False:</span><br><span class="line">            yield None</span><br></pre></td></tr></table></figure>
+
+<p>在python里，有很多对象都是<code>Iterable</code>的，只要能够被for进行迭代就是<code>Iterable</code>的。在这些对象内部都有<code>__iter__(self)</code>方法，在对<code>Iterable</code>对象进行迭代时，它会通过这个方法返回的<strong><code>iter(self)</code></strong>(即一个迭代器)，此时for再进行<code>next()</code>操作，就达到迭代的目的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># 列子1</span><br><span class="line"></span><br><span class="line"># 列表是迭代器 &#x2F;&#x2F; 其实准确来说 list以及后面这几个是iterable,加上iter后变成真正的iterator</span><br><span class="line">for element in [1, 2, 3]:  # 在调用list的时候，会自动启动list内部的iter()方法，该方法返回一个迭代器，然后fornext方法，从而实现迭代</span><br><span class="line">    print(element)</span><br><span class="line"></span><br><span class="line">a &#x3D; [1,2,3]  # &lt;class &#39;list&#39;&gt;: [1, 2, 3]</span><br><span class="line">b &#x3D; iter(a) # &lt;list_iterator object at 0x00000296E6690CC0&gt;</span><br><span class="line"></span><br><span class="line"># 元组是Iterable</span><br><span class="line">for element in (1, 2, 3):</span><br><span class="line">    print(element)</span><br><span class="line"># 字典是Iterable</span><br><span class="line">for key in &#123;&#39;one&#39;:1, &#39;two&#39;:2&#125;:</span><br><span class="line">    print(key)</span><br><span class="line"># 字符串是Iterable</span><br><span class="line">for char in &quot;123&quot;:</span><br><span class="line">    print(char)</span><br><span class="line"># 打开的text同样是Iterable</span><br><span class="line">for line in open(&quot;iterator.txt&quot;):</span><br><span class="line">    print(line, end&#x3D;&#39;&#39;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#例子2</span><br><span class="line"></span><br><span class="line">from collections import Iterable</span><br><span class="line">from collections import Iterator</span><br><span class="line"></span><br><span class="line">class MyIterableObj(object):</span><br><span class="line">    def __iter__(self):</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">demo1 &#x3D; MyIterableObj()</span><br><span class="line">print(isinstance(demo1,Iterator))   #False</span><br><span class="line">print(isinstance(demo1,Iterable))   # True</span><br><span class="line"></span><br><span class="line">class MyIterable():</span><br><span class="line"></span><br><span class="line">    def __next__(self):</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">demo2 &#x3D; MyIterable()</span><br><span class="line">print(isinstance(demo2,Iterator))   # False</span><br><span class="line">print(isinstance(demo2,Iterable))   # False</span><br></pre></td></tr></table></figure>
+
+<h2 id="迭代器Iterator"><a href="#迭代器Iterator" class="headerlink" title="迭代器Iterator"></a>迭代器Iterator</h2><p>python里面的Iterator类是继承Iterable的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#迭代器继承了可迭代对象类</span><br><span class="line">class Iterator(Iterable):</span><br><span class="line"></span><br><span class="line">    __slots__ &#x3D; ()</span><br><span class="line"></span><br><span class="line">    @abstractmethod</span><br><span class="line">    def __next__(self):</span><br><span class="line">        &#39;Return the next item from the iterator. When exhausted, raise StopIteration&#39;</span><br><span class="line">        raise StopIteration</span><br><span class="line"></span><br><span class="line">    def __iter__(self):</span><br><span class="line">        return self</span><br></pre></td></tr></table></figure>
+
+<p>　<font color="FF0000"> 因此它实际是Iterable基础上多了一个<code>__next__()</code>方法。所以总结就是一个对象是迭代器，就看它含有<code>__iter__</code>和<code>__next__</code>方法与否。 </font><br>说来也是蛮简单的。</p>
+<p>下面给出例子示意：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">class MyIterator():</span><br><span class="line"></span><br><span class="line">    def __iter__(self):</span><br><span class="line">        pass</span><br><span class="line">    def __next__(self):</span><br><span class="line">        pass</span><br><span class="line"></span><br><span class="line">demo3 &#x3D; MyIterator()</span><br><span class="line">print(isinstance(demo3,Iterator))   # True</span><br><span class="line">print(isinstance(demo3,Iterable))   # True</span><br><span class="line"></span><br><span class="line">##################################################</span><br><span class="line">class NumIterator(object):</span><br><span class="line">    #初始化我们接收一个参数n  告诉我们迭代到多少结束</span><br><span class="line">    def __init__(self , n):</span><br><span class="line">        self.n &#x3D; n</span><br><span class="line">        #我们实际上是把 i 交给函数调用者</span><br><span class="line">        self.i &#x3D; 0</span><br><span class="line">    # iter方法 返回一个迭代器，自己就是迭代器 所以返回自己</span><br><span class="line">    def __iter__(self):</span><br><span class="line">        return self</span><br><span class="line">    # next方法 判断是否越界 如果不越界返回一个元素  如果越界了抛出异常</span><br><span class="line">    def __next__(self):</span><br><span class="line">        #如果 没有越界， 我们返回给调用者迭代结果，并且自己记录下一次迭代的位置</span><br><span class="line">        if self.i &lt;&#x3D; self.n:</span><br><span class="line">            res &#x3D; self.i</span><br><span class="line">            self.i +&#x3D; 1</span><br><span class="line">            return res</span><br><span class="line">        # 进入else说明i已经超过n 迭代越界了 抛出异常告诉for循环 迭代结束了</span><br><span class="line">        else:</span><br><span class="line">            #如果不抛出这个异常，for循环不知道什么时候停止迭代 会不停的调用next 陷入死循环</span><br><span class="line">            raise StopIteration</span><br><span class="line"></span><br><span class="line">#一个前3的自然数的迭代器对象</span><br><span class="line">demo3 &#x3D; NumIterator(3)</span><br><span class="line"># 调用python内建的next方法来获取迭代器的元素</span><br><span class="line">print( next(demo3) )    # 0</span><br><span class="line">print( next(demo3) )    # 1</span><br><span class="line">print( next(demo3) )    # 2</span><br><span class="line">print( next(demo3) )    # 3</span><br><span class="line">#print( next(demo3) )    # 这时候再调用会抛出异常 因为越界了</span><br><span class="line"></span><br><span class="line">#同样我们自己写的迭代器能够放入for循环当中</span><br><span class="line">demo4 &#x3D; NumIterator(10)</span><br><span class="line">for num in demo4 :</span><br><span class="line">    print(num)</span><br><span class="line">#会打印出从0 到 10  然后for循环就停了</span><br></pre></td></tr></table></figure>
+
+<p><font color="FF0000"> <strong>NOTE: 需要注意的是，迭代器只循环一次，你可以把它想象成指针的运作模式，循环的最后一次结束就是指针指向末尾元素+1的地址，因此，如果后续继续对这个迭代器进行调用，那么它是空的：</strong></font></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　a&#x3D;[1,2,3,4,5,6,7]</span><br><span class="line"></span><br><span class="line">　　b&#x3D;reversed(a)</span><br><span class="line"></span><br><span class="line">输出：</span><br><span class="line"></span><br><span class="line">　　print(b)</span><br><span class="line"></span><br><span class="line">　　&lt;list_reverse iterator object at 0x000001652144E940&gt;      显示为一个迭代器对象的内存地址</span><br><span class="line"></span><br><span class="line">　　print(list(b))</span><br><span class="line"></span><br><span class="line">　　[7, 6, 5, 4, 3, 2, 1] </span><br><span class="line"></span><br><span class="line">当再次输出对象b时：</span><br><span class="line"></span><br><span class="line">　　print(list(b))</span><br><span class="line"></span><br><span class="line">　　[]</span><br></pre></td></tr></table></figure>
+
+<h2 id="生成器-Generator"><a href="#生成器-Generator" class="headerlink" title="生成器 Generator"></a>生成器 Generator</h2><p>为什么要有生成器呢？它是什么？</p>
+<p>–首先，生成器的出现使得我们能够更加容易的定义迭代协议，因为它内部已经自己定义好了生成器所需要的那两个方法。–　<font color="FF0000"> 它可以简单的理解为一种迭代器（可以从源码看出）。 </font></p>
+<p>下面是<strong>廖雪峰老师</strong>的解释：</p>
+<blockquote>
+<p>通过列表生成式，我们可以直接创建一个列表。<br>但是，受到内存限制，列表容量肯定是有限的。<br>而且，创建一个包含100万个元素的列表，不仅占用很大的存储空间，如果我们仅仅需要访问前面几个元素，那后面绝大多数元素占用的空间都白白浪费了。<br>所以，如果列表元素可以按照某种算法推算出来，那我们是否可以在循环的过程中不断推算出后续的元素呢？<br>这样就不必创建完整的list，从而节省大量的空间。在Python中，这种一边循环一边计算的机制，称为生成器（Generator）。</p>
+</blockquote>
+<p>源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># generator类继承了迭代器类，所以生成器也是一种迭代器</span><br><span class="line">class Generator(Iterator):</span><br><span class="line"></span><br><span class="line">    __slots__ &#x3D; () </span><br><span class="line"></span><br><span class="line">    def __next__(self):   </span><br><span class="line">        &quot;&quot;&quot;Return the next item from the generator.</span><br><span class="line">        When exhausted, raise StopIteration.</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        return self.send(None)</span><br></pre></td></tr></table></figure>
+
+<p>　<font color="FF0000"> 生成器其实更加准确的描述是“生成器函数”，它嵌入到函数内部，使得该函数被包装成为迭代器，它只会对”next”方法调用时进行响应（可以从例子1的结果看出）。 </font></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#例子1</span><br><span class="line"></span><br><span class="line">def gen(n):</span><br><span class="line"></span><br><span class="line">    print(&#39;n: &#39;, n)</span><br><span class="line">    while n &gt;0:</span><br><span class="line">        yield n</span><br><span class="line">        n-&#x3D;1</span><br><span class="line">    print(&#39;done!&#39;)</span><br><span class="line"></span><br><span class="line">c &#x3D; gen(3)  # 生成器只会响应next方法, 因此在创建实例的时候不会执行任何语句</span><br><span class="line">from collections import Generator  #</span><br><span class="line"></span><br><span class="line">print(isinstance(c,Iterator))   # True</span><br><span class="line">print(isinstance(c,Iterable))   # True</span><br><span class="line">print(isinstance(c,Generator))  # True</span><br><span class="line"></span><br><span class="line">print(next(c))   # n: 3 &#39;\n&#39; 3</span><br><span class="line">print(next(c))   # 2</span><br><span class="line">print(next(c))   # 1</span><br><span class="line">print(next(c))  # 报错,超过迭代器对象的范围</span><br></pre></td></tr></table></figure>
+
+<h3 id="类-yield"><a href="#类-yield" class="headerlink" title="类 + yield"></a>类 + yield</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">####   类 + yield</span><br><span class="line"></span><br><span class="line">class gen2():</span><br><span class="line"></span><br><span class="line">    def gen(self,n):</span><br><span class="line">        print(&#39;n: &#39;, n)</span><br><span class="line">        while n &gt; 0:</span><br><span class="line">            yield n</span><br><span class="line">            n -&#x3D; 1</span><br><span class="line">        print(&#39;done!&#39;)</span><br><span class="line"></span><br><span class="line">d &#x3D; gen2()</span><br><span class="line">e &#x3D; d.gen(2)</span><br><span class="line">print(isinstance(d,Iterator))   # False</span><br><span class="line">print(isinstance(d,Iterable))   # False</span><br><span class="line">print(isinstance(d,Generator))  # False</span><br><span class="line"></span><br><span class="line">print(isinstance(e,Iterator))   # True</span><br><span class="line">print(isinstance(e,Iterable))   # True</span><br><span class="line">print(isinstance(e,Generator))  # True</span><br><span class="line">print(list(e))   # 保存yield 返回的结果[2,1]</span><br><span class="line"></span><br><span class="line">print(next(e)) # n: 2 2</span><br><span class="line">print(next(e)) # 1</span><br><span class="line"># print(next(e)) # 报错</span><br></pre></td></tr></table></figure>
+
+<h3 id="用生成器实现迭代协议–-yield-amp-yield-from"><a href="#用生成器实现迭代协议–-yield-amp-yield-from" class="headerlink" title="用生成器实现迭代协议– yield &amp; yield from"></a>用生成器实现迭代协议– yield &amp; yield from</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"># 字符串</span><br><span class="line">astr&#x3D;&#39;ABC&#39;</span><br><span class="line"># 列表</span><br><span class="line">alist&#x3D;[1,2,3]</span><br><span class="line"># 字典</span><br><span class="line">adict&#x3D;&#123;&quot;name&quot;:&quot;wangbm&quot;,&quot;age&quot;:18&#125;</span><br><span class="line"># 生成器</span><br><span class="line">agen&#x3D;(i for i in range(4,8))</span><br><span class="line"></span><br><span class="line">def gen(*args, **kw):</span><br><span class="line">    for item in args:</span><br><span class="line">        for i in item:</span><br><span class="line">            yield i</span><br><span class="line"></span><br><span class="line">new_list&#x3D;gen(astr, alist, adict, agen)</span><br><span class="line">print(list(new_list)) # [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, 1, 2, 3, &#39;name&#39;, &#39;age&#39;, 4, 5, 6, 7]</span><br><span class="line">print(new_list) # &lt;generator object gen at 0x000001B6C8759200&gt;</span><br><span class="line"></span><br><span class="line">################</span><br><span class="line">def generator2():</span><br><span class="line">    yield &#39;a&#39;</span><br><span class="line">    yield &#39;b&#39;</span><br><span class="line">    yield &#39;c&#39;</span><br><span class="line">    # yield from generator()  # yield from iterable本质上等于 for item in iterable: yield item的缩写版</span><br><span class="line">    yield from [11, 22, 33, 44]</span><br><span class="line">    yield from (12, 23, 34)</span><br><span class="line">    yield from range(3)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for i in generator2():</span><br><span class="line">    print(i, end&#x3D;&#39; , &#39;)</span><br><span class="line"></span><br><span class="line"># 运行的结果为：a , b , c , 0 , 1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 11 , 22 , 33 , 44 , 12 , 23 , 34 , 0 , 1 , 2 </span><br><span class="line"></span><br><span class="line">## 这里用深度优先搜索更加详细的介绍生成器实现迭代协议的灵魂所在</span><br><span class="line">class Node:</span><br><span class="line">    def __init__(self,value):</span><br><span class="line">        self._value &#x3D; value</span><br><span class="line">        self._children &#x3D; []</span><br><span class="line"></span><br><span class="line">    def __repr__(self):</span><br><span class="line">        return &#39;node&#123;!r&#125;&#39;.format(self._value)</span><br><span class="line"></span><br><span class="line">    def add_chiild(self,node):</span><br><span class="line">        self._children.append(node)</span><br><span class="line"></span><br><span class="line">    def __iter__(self):  #</span><br><span class="line">        return iter(self._children)</span><br><span class="line"></span><br><span class="line">    def depth_first(self):</span><br><span class="line"></span><br><span class="line">        yield  self</span><br><span class="line">        print(&quot;self &#123;&#125; is Iterator:   &#123;&#125; &quot;.format(self, isinstance(self,Iterator)))  # False</span><br><span class="line"></span><br><span class="line">        for c in self:  # 调用iter方法</span><br><span class="line">            # yield from c.depth_first()   #  语法是: yield from + generator&#x2F;Iterable&#x2F;Iterator</span><br><span class="line">            # 等价于:</span><br><span class="line">            #a &#x3D; c.depth_first()</span><br><span class="line">            #for i in c.depth_first():</span><br><span class="line">            #   yield i</span><br><span class="line"></span><br><span class="line">root &#x3D; Node(0)</span><br><span class="line">child1 &#x3D; Node(1)</span><br><span class="line">child2 &#x3D; Node(2)</span><br><span class="line">root.add_chiild(child1)</span><br><span class="line">root.add_chiild(child2)</span><br><span class="line">child1.add_chiild(Node(3))</span><br><span class="line">child1.add_chiild(Node(4))</span><br><span class="line">child2.add_chiild(Node(5))</span><br><span class="line"></span><br><span class="line">for ch in root.depth_first():</span><br><span class="line">    print(ch)</span><br><span class="line"></span><br><span class="line">*[^_^]:</span><br><span class="line">outputs:</span><br><span class="line">node0</span><br><span class="line">self node0 is Iterator:   False </span><br><span class="line">node1</span><br><span class="line">self node1 is Iterator:   False </span><br><span class="line">node3</span><br><span class="line">self node3 is Iterator:   False </span><br><span class="line">node4</span><br><span class="line">self node4 is Iterator:   False </span><br><span class="line">node2</span><br><span class="line">self node2 is Iterator:   False </span><br><span class="line">node5</span><br><span class="line">self node5 is Iterator:   False</span><br></pre></td></tr></table></figure>
+<h2 id="简单的扩展"><a href="#简单的扩展" class="headerlink" title="简单的扩展"></a>简单的扩展</h2><p>在上述进行迭代器和生成器的简单介绍后，相信对两者有了清晰的认识，这里给出python里面一个迭代器的简单应用：<code>reversed</code>方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">#### __reversed__ 迭代器</span><br><span class="line"></span><br><span class="line">class cout:</span><br><span class="line">    def __init__(self,start):</span><br><span class="line">        self.start &#x3D; start</span><br><span class="line"></span><br><span class="line">    def __iter__(self):</span><br><span class="line">        n &#x3D; self.start</span><br><span class="line">        while n &gt;0:</span><br><span class="line">            yield n</span><br><span class="line">            n-&#x3D;1</span><br><span class="line">    def __reversed__(self):</span><br><span class="line">        n &#x3D; 1</span><br><span class="line">        while n&lt;&#x3D;self.start:</span><br><span class="line">            yield n</span><br><span class="line">            n+&#x3D;1</span><br><span class="line"></span><br><span class="line">a &#x3D; cout(3)  </span><br><span class="line">for i in reversed(a):  # 在调用内部的reversed函数时，会寻找该类的&#96;__reversed__&#96;方法</span><br><span class="line">    print(i)</span><br><span class="line"></span><br><span class="line"># outputs:</span><br><span class="line"># 1</span><br><span class="line"># 2</span><br><span class="line"># 3</span><br><span class="line"></span><br><span class="line">for i in a:</span><br><span class="line">    print(i)   # 调用__iter__方法</span><br><span class="line"># outputs:</span><br><span class="line"># 3</span><br><span class="line"># 2</span><br><span class="line"># 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>写道一半不想往下写了。总结就看上面的例子吧，很清楚。自己根据例子总结</p>
+
+    
+<!-- 《添加版权声明 -->
+
+    <!-- 《添加版权声明 -->
+<!--添加版权声明https://github.com/JoeyBling/hexo-theme-yilia-plus/commit/c1215e132f6d5621c5fea83d3c4f7ccbcca074a3-->
+
+
+<!-- #版权基础设定：0-关闭声明； 1-文章对应的md文件里有declare: true属性，才有版权声明； 2-所有文章均有版权声明 -->
+
+  <div class="declare">
+    <strong class="author">本文作者：</strong>
+    
+      罗小young
+    
+    <br>
+    <strong class="create-time">发布时间：</strong>
+    2020-08-15
+    <br>
+    <strong class="update-time">最后更新：</strong>
+    2020-08-15
+    <br>
+    <strong class="article-titles">本文标题：</strong>
+    <a href="http://yoursite.com/2020/08/15/iterable_iterator_generator/" title="Python 迭代器和生成器" target="_blank">Python 迭代器和生成器</a>
+  <br>
+    <strong class="copyright">版权声明：</strong>
+    本作品采用
+    <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议">CC BY-NC-SA 4.0</a>
+    许可协议进行许可。转载请注明出处！
+    
+      <br>
+      <a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a>
+    
+  </div>
+
+<!-- 添加版权声明》 -->
+
+<!-- 添加版权声明》 -->
+    
+    <div class="page-reward">
+      <a href="javascript:void(0);" class="page-reward-btn tooltip-top" target="_self">
+        <div class="tooltip tooltip-east">
+          <span class="tooltip-item">
+            赏
+          </span>
+          <span class="tooltip-content">
+            <span class="tooltip-text">
+              <span class="tooltip-inner">
+                <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢,我会更加努(随)力(缘)更新好(水)文章!<i
+                    class="icon icon-quo-right"></i></p>
+                <div class="reward-box">
+                  
+                  <div class="reward-box-item">
+                    <img class="reward-img" src="/assets/img/zhifubao.jpg">
+                    <span class="reward-type">支付宝</span>
+                  </div>
+                  
+                  
+                  <div class="reward-box-item">
+                    <img class="reward-img" src="/assets/img/weixin.jpg">
+                    <span class="reward-type">微信</span>
+                  </div>
+                  
+                </div>
+              </span>
+            </span>
+          </span>
+        </div>
+      </a>
+    </div>
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">科研五色石</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+    
 
+    
+
+    
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/08/15/iterable_iterator_generator/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+    
+    <div class="clearfix"></div>
+  </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/02/11/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F3/" class="archive-article-date">
-        <time datetime="2020-02-11T03:39:40.437Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-11</time>
-</a>
 
+
+<nav id="article-nav">
+  
+  
+    <a href="/2020/08/11/pytorch%E7%9A%84%E4%B8%80%E4%BA%9Bloss%E7%AC%94%E8%AE%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">nn.BCELoss()&amp; nn.CrossEntropyLoss()</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2020/02/11/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F3/" target="_blank">科研五色石每日读后感之三：让课题飞一会儿</a>
-  
-    </h1>
-  
-
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">科研五色石</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#意义-作用"><span class="toc-number">1.</span> <span class="toc-text">意义&#x2F;作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Iterable"><span class="toc-number">2.</span> <span class="toc-text">Iterable</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#迭代器Iterator"><span class="toc-number">3.</span> <span class="toc-text">迭代器Iterator</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#生成器-Generator"><span class="toc-number">4.</span> <span class="toc-text">生成器 Generator</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类-yield"><span class="toc-number">4.1.</span> <span class="toc-text">类 + yield</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用生成器实现迭代协议–-yield-amp-yield-from"><span class="toc-number">4.2.</span> <span class="toc-text">用生成器实现迭代协议– yield &amp; yield from</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简单的扩展"><span class="toc-number">5.</span> <span class="toc-text">简单的扩展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结："><span class="toc-number">6.</span> <span class="toc-text">总结：</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/02/10/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F2/" class="archive-article-date">
-        <time datetime="2020-02-10T02:27:05.627Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-10</time>
-</a>
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2020/02/10/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F2/" target="_blank">科研五色石每日读后感之二：穷追猛打，更上一层楼</a>
-  
-    </h1>
-  
+        
+    </div>
+</aside>
 
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">科研五色石</a>
-        		</li>
-      		
-		</ul>
-	</div>
 
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/02/09/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F/" class="archive-article-date">
-        <time datetime="2020-02-09T02:31:10.885Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-09</time>
-</a>
 
-        </div>
-    	 
+
+
+
+
+
+
   
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2020/02/09/%E7%A7%91%E7%A0%94%E4%BA%94%E8%89%B2%E7%9F%B3%E6%AF%8F%E6%97%A5%E8%AF%BB%E5%90%8E%E6%84%9F/" target="_blank">科研五色石每日读后感之一：科研好感觉若干种</a>
+  <div id="gitment-ctn"></div>
   
-    </h1>
+    <!-- 中文 -->
+    <link rel="stylesheet" href="/lib/gitment.css">
+    <script src="/lib/gitment.js"></script>
+  
+  <script>
+    <!-- id: "Python 迭代器和生成器" -->
+    var gitment = new Gitment({
+      id: "20200815091926",
+      owner: 'aiboys',
+      repo: 'aiboys.github.io',
+      oauth: {
+        client_id: 'd64645976912560d1df7',
+        client_secret: '72b3474da6d95fcd3f0923335b33fc4ab1e3c16b',
+      },
+    })
+    gitment.render('gitment-ctn')
+  </script>
+
+
   
 
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">科研五色石</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/01/16/hello-world/" class="archive-article-date">
-        <time datetime="2020-01-16T06:54:07.995Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-01-16</time>
-</a>
-
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-	
-	  <a class="archive-article-title" href="/2020/01/16/hello-world/" target="_blank">Hello World</a>
-  
-    </h1>
-  
-
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2020/">&amp;laquo; Prev</a><a class="page-number" href="/archives/2020/">1</a><span class="page-number current">2</span>
-    </nav>
-  
 
 
           </div>
@@ -440,8 +531,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
