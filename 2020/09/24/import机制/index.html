@@ -16,8 +16,8 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:image" content="https://github.com/aiboys/Markdown_pic/blob/master/cover.jpg?raw=true">
 <meta property="og:image" content="https://github.com/aiboys/Markdown_pic/blob/master/project1_image_distance_trans/pics/file.png?raw=true">
-<meta property="article:published_time" content="2020-09-24T04:08:19.560Z">
-<meta property="article:modified_time" content="2020-09-24T04:08:19.561Z">
+<meta property="article:published_time" content="2020-09-24T04:12:58.982Z">
+<meta property="article:modified_time" content="2020-09-24T04:12:58.982Z">
 <meta property="article:author" content="罗小young">
 <meta property="article:tag" content="python">
 <meta name="twitter:card" content="summary">
@@ -184,7 +184,7 @@
         </span>
 
 <a href="/2020/09/24/import%E6%9C%BA%E5%88%B6/" class="archive-article-date">
-        <time datetime="2020-09-24T04:08:19.560Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-24</time>
+        <time datetime="2020-09-24T04:12:58.982Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-24</time>
 </a>
 
   
@@ -235,9 +235,9 @@
 
 
 
-<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>为了更好的理解”模块与包”以及在python里如何导入包，本文将整体的机制以及一部分细节进行阐述。本文主要参考 <a href="https://python3-cookbook.readthedocs.io/zh_CN/latest/chapters/p10_modules_and_packages.html" target="_blank" rel="noopener">Py3 cookbook</a>,<br><a href="https://blog.csdn.net/weixin_38256474/article/details/81228492" target="_blank" rel="noopener">blog1</a>, <a href="https://loggerhead.me/posts/python-de-import-ji-zhi.html#fn:import-site" target="_blank" rel="noopener">blog2</a>,<br><a href="https://www.cnblogs.com/xueweihan/p/5118222.html" target="_blank" rel="noopener">blog</a>, <a href="http://www.pythondoc.com/pythontutorial3/modules.html" target="_blank" rel="noopener">pythondoc</a>.</p>
-<h2 id="模块与包"><a href="#模块与包" class="headerlink" title="模块与包"></a>模块与包</h2><p>模块就是保存了<a href="https://docs.python.org/zh-cn/3/library/index.html" target="_blank" rel="noopener"><code>Python</code></a>代码的文件。它能定义函数，<br>类和变量，模块里也能包含可执行的代码。为了更好的组织模块，会将多个模块分为包。包就是在该文件夹下必须存在<code>__init__.py</code>代码，<br>这个代码包里可以有一些代码指令，当然也可以为空，为空的时候，python在运行时会默认加载一些初始化代码，具体的细节在后续<br>进行详细解释。</p>
-<h2 id="import机制"><a href="#import机制" class="headerlink" title="import机制"></a>import机制</h2><p>作为<code>Python</code> 最最基本的’机制’之一，”模块与包”这个概念可以说是贯穿于整个<code>Python</code>。在用户使用<code>Python</code>的过程中，首先需要做的是安装<code>Python</code>环境，比如你是<br>用<a href="https://www.anaconda.com/" target="_blank" rel="noopener"><code>anaconda</code></a>进行安装时，在anaconda整个大工程下python的每个环境都是一个<br>文件夹(包)。可以看出模块与包是任何大型程序的核心。下面给出<code>import</code>机制: (<font color="FF0000"><strong>NOTICE:</strong> import的机制其实有点复杂的，比如说啥绝对路径，以及为了解决硬编码路径而诞生的相对路径。<br>这里就不给出二者的区别以及注意事项了。由于它的复杂性(比如你在顶层运行以及在子模块运行程序都会不一样)，但其实你不管是啥包，以及文件的结构有多复杂，<br>只要知道python的import包/模块的搜索原则就行：不要管pycharm的提醒错误，它很蠢…</font>)</p>
+<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>为了更好的理解”模块与包”以及在python里如何导入包，本文将整体的机制以及一部分细节进行阐述。本文主要参考 <a href="https://python3-cookbook.readthedocs.io/zh_CN/latest/chapters/p10_modules_and_packages.html" target="_blank" rel="noopener">Py3 cookbook</a>, <a href="https://blog.csdn.net/weixin_38256474/article/details/81228492" target="_blank" rel="noopener">blog1</a>, <a href="https://loggerhead.me/posts/python-de-import-ji-zhi.html#fn:import-site" target="_blank" rel="noopener">blog2</a>,<a href="https://www.cnblogs.com/xueweihan/p/5118222.html" target="_blank" rel="noopener">blog</a>, <a href="http://www.pythondoc.com/pythontutorial3/modules.html" target="_blank" rel="noopener">pythondoc</a>.</p>
+<h2 id="模块与包"><a href="#模块与包" class="headerlink" title="模块与包"></a>模块与包</h2><p>模块就是保存了<a href="https://docs.python.org/zh-cn/3/library/index.html" target="_blank" rel="noopener"><code>Python</code></a>代码的文件。它能定义函数，类和变量，模块里也能包含可执行的代码。为了更好的组织模块，会将多个模块分为包。包就是在该文件夹下必须存在<code>__init__.py</code>代码，这个代码包里可以有一些代码指令，当然也可以为空，为空的时候，python在运行时会默认加载一些初始化代码，具体的细节在后续进行详细解释。</p>
+<h2 id="import机制"><a href="#import机制" class="headerlink" title="import机制"></a>import机制</h2><p>作为<code>Python</code> 最最基本的’机制’之一，”模块与包”这个概念可以说是贯穿于整个<code>Python</code>。在用户使用<code>Python</code>的过程中，首先需要做的是安装<code>Python</code>环境，比如你是用<a href="https://www.anaconda.com/" target="_blank" rel="noopener"><code>anaconda</code></a>进行安装时，在anaconda整个大工程下python的每个环境都是一个文件夹(包)。可以看出模块与包是任何大型程序的核心。下面给出<code>import</code>机制: (<font color="FF0000"><strong>NOTICE:</strong> import的机制其实有点复杂的，比如说啥绝对路径，以及为了解决硬编码路径而诞生的相对路径。这里就不给出二者的区别以及注意事项了。由于它的复杂性(比如你在顶层运行以及在子模块运行程序都会不一样)，但其实你不管是啥包，以及文件的结构有多复杂，只要知道python的import包/模块的搜索原则就行：不要管pycharm的提醒错误，它很蠢…</font>)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1：搜索sys.path:</span><br><span class="line">                1. 当前.py所在目录以及工程根目录</span><br><span class="line">                2. 环境变量PYTHONPATH中列出的目录(默认为空)</span><br><span class="line">                3. site-packages包（pip, conda install, easy_install等安装都放在这个目录）</span><br><span class="line">2：搜索内置模块：builtins模块，里面有dict，list，object等内置类型</span><br><span class="line">(在py2.+是1和2顺序调换了)</span><br></pre></td></tr></table></figure>
 
 <h2 id="python中的-init-py模块"><a href="#python中的-init-py模块" class="headerlink" title="python中的__init__.py模块:"></a>python中的<code>__init__.py</code>模块:</h2><p>如果一个文件夹拥有这个模块，那么这个文件夹就是<code>包</code>，包负责组织多个模块。’<strong>init</strong>.py’的目的是要包含不同运行级别的包<br>的可选的初始化代码。举个例子，如果你执行了语句’import graphics’，文件’graphics.<strong>init</strong>.py’会被导入，建立’graphics’的<br>命名空间的内容。如果你要执行’import graphics.a.a_3’，那么文件’graphcis.<strong>init</strong>.py’和’graphics.a.<strong>init</strong>.py’都会在导入子模块之前被<br>导入。很多时候’<strong>init</strong>.py’空着就行，但是有时候你可以在里面写一些导入代码，这样就可以方便后续的一键导入，而不是一个一个导入子模块。<br>你也可以在’<strong>init</strong>.py’里写<code>__all__=[&#39;&#39;]</code>，如果此刻你需要执行’from a import *’，那么会导入’<strong>all</strong>‘这个列表里的模块，<br>没被列出来的不会被导入;当然你也可以为空列表，这样就不会有任何子模块被导入。</p>
@@ -455,7 +455,7 @@
   <script>
     <!-- id: "Python import机制(持续更新...)" -->
     var gitment = new Gitment({
-      id: "20200924120819",
+      id: "20200924121258",
       owner: 'aiboys',
       repo: 'aiboys.github.io',
       oauth: {
